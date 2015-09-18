@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="MySQL - groenetenen@localhost" uuid="b05ad2e4-bb40-46ba-98a0-d986d8f38567">
-    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  <data-source name="MySQL - groenetenen@localhost" uuid="33fad3e1-16b9-48fe-9915-bef4b4169188">
+    <database-info product="MySQL" version="5.6.26-log" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="groenetenen"/>
+    <table name="authorities" schema="" catalog="groenetenen" type="TABLE">
+      <column name="username" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="authority" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <foreign-key name="fk_authorities" columns="username" ref-table="users" ref-schema="" ref-catalog="groenetenen" ref-columns="username" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="ix_auth_username" unique="false" columns="username,authority"/>
+    </table>
+    <table name="filialen" schema="" catalog="groenetenen" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="naam" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="hoofdFiliaal" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <column name="straat" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="huisNr" sqlType="VARCHAR" precision="7" scale="0" nullable="false" jdbcType="12"/>
+      <column name="postcode" sqlType="SMALLINT UNSIGNED" precision="5" scale="0" nullable="false" jdbcType="5"/>
+      <column name="gemeente" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="inGebruikName" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
+      <column name="waardeGebouw" sqlType="DECIMAL" precision="10" scale="2" nullable="true" jdbcType="3"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_filialen" table="werknemers" schema="" catalog="groenetenen" columns="filiaalId"/>
+    </table>
+    <table name="gebruikers" schema="" catalog="groenetenen" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="naam" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="paswoord" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="actief" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_gebruikers" table="gebruikersrollen" schema="" catalog="groenetenen" columns="gebruikerid"/>
+      <index name="IX_Naam" unique="false" columns="naam"/>
+    </table>
+    <table name="gebruikersrollen" schema="" catalog="groenetenen" type="TABLE">
+      <column name="gebruikerid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="rolid" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="gebruikerid,rolid"/>
+      <foreign-key name="FK_Rollen" columns="rolid" ref-table="rollen" ref-schema="" ref-catalog="groenetenen" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="FK_gebruikers" columns="gebruikerid" ref-table="gebruikers" ref-schema="" ref-catalog="groenetenen" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="FK_Rollen" unique="false" columns="rolid"/>
+    </table>
+    <table name="rollen" schema="" catalog="groenetenen" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="naam" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_Rollen" table="gebruikersrollen" schema="" catalog="groenetenen" columns="rolid"/>
+      <index name="IX_Naam" unique="true" columns="naam"/>
+    </table>
+    <table name="users" schema="" catalog="groenetenen" type="TABLE">
+      <column name="username" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="password" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="enabled" sqlType="TINYINT" precision="3" scale="0" nullable="false" jdbcType="-6"/>
+      <primary-key name="PRIMARY" columns="username"/>
+      <exported-key name="fk_authorities" table="authorities" schema="" catalog="groenetenen" columns="username"/>
+    </table>
+    <table name="werknemers" schema="" catalog="groenetenen" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="voornaam" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="familienaam" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="filiaalId" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="wedde" sqlType="DECIMAL" precision="10" scale="2" nullable="false" jdbcType="3"/>
+      <column name="rijksregisterNr" sqlType="BIGINT UNSIGNED" precision="20" scale="0" nullable="false" jdbcType="-5"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_filialen" columns="filiaalId" ref-table="filialen" ref-schema="" ref-catalog="groenetenen" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="rijksregisterNr" unique="true" columns="rijksregisterNr"/>
+    </table>
   </data-source>
 </component>
