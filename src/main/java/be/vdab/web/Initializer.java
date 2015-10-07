@@ -3,6 +3,8 @@ package be.vdab.web;
 
 import be.vdab.dao.CreateDAOBeans;
 import be.vdab.datasource.CreateDataSourceBean;
+import be.vdab.mail.CreateMailBeans;
+import be.vdab.restclients.CreateRestClientBeans;
 import be.vdab.restservices.CreateRestControllerBeans;
 import be.vdab.services.CreateServiceBeans;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
@@ -16,7 +18,8 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] {CreateDataSourceBean.class, CreateDAOBeans.class, CreateServiceBeans.class};
+        return new Class<?>[] {CreateDataSourceBean.class, CreateDAOBeans.class,
+                CreateServiceBeans.class, CreateRestClientBeans.class, CreateMailBeans.class };
 	}
 
 	@Override

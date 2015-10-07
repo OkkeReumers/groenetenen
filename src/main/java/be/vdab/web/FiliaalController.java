@@ -159,4 +159,10 @@ class FiliaalController {
     void initBinderFiliaal(WebDataBinder binder) {
         binder.initDirectFieldAccess();
     }
+
+    private static final String PER_ID_VIEW = "filialen/perid";
+    @RequestMapping(value = "perid", method = RequestMethod.GET)
+    String findById() {
+        return PER_ID_VIEW;
+    }
 }
