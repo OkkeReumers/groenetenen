@@ -3,6 +3,7 @@ package be.vdab.restservices;
 import be.vdab.dao.CreateTestDAOBeans;
 import be.vdab.datasource.CreateTestDataSourceBean;
 import be.vdab.entities.Filiaal;
+import be.vdab.mail.CreateMailBeans;
 import be.vdab.restclients.CreateRestClientBeans;
 import be.vdab.services.CreateServiceBeans;
 import be.vdab.services.FiliaalService;
@@ -41,7 +42,7 @@ import static
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CreateTestDataSourceBean.class, CreateTestDAOBeans.class, CreateServiceBeans.class,
-        CreateControllerBeans.class , CreateRestControllerBeans.class, CreateRestClientBeans.class})
+        CreateControllerBeans.class , CreateRestControllerBeans.class, CreateRestClientBeans.class, CreateMailBeans.class})
 @WebAppConfiguration
 @Transactional
 public class FiliaalRestControllerTest {
@@ -54,7 +55,7 @@ public class FiliaalRestControllerTest {
     @Before
     public void before() {
         filiaal = new Filiaal("naam", true, BigDecimal.TEN, new Date(), new Adres("straat","huisNr", 1000, "gemeente"));
-        filiaalService.create(filiaal);
+        filiaalService.create(filiaal, "");
         mvc= MockMvcBuilders.webAppContextSetup(context).build();
     }
 

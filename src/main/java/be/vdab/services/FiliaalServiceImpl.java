@@ -7,6 +7,7 @@ import be.vdab.mail.MailSender;
 import be.vdab.valueobjects.PostcodeReeks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +29,10 @@ class FiliaalServiceImpl implements FiliaalService {
 
     @Override
     @ModifyingTransactionalServiceMethod
-    public void create(Filiaal filiaal) {
+    public void create(Filiaal filiaal, String urlAlleFilialen) {
         filiaal.setId(filiaalDAO.save(filiaal).getId());
-        mailSender.nieuwFiliaalMail(filiaal);
+        mailSender.nieuwFiliaalMail(filiaal,
+                urlAlleFilialen + '/' + filiaal.getId());
     }
 
     @Override
@@ -82,5 +84,11 @@ class FiliaalServiceImpl implements FiliaalService {
         for (Filiaal filiaal : filialen) {
             filiaal.afschrijven();
         }
+    }
+
+    @Override
+    @Scheduled(/*cron = "0 0 1 * * *"*/ fixedRate=60000) // test = om de minuut
+    public void aantalFilialenMail() {
+        mailSender.aantalFilialenMail(filiaalDAO.count());
     }
 }
